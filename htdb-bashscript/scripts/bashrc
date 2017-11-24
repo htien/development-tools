@@ -1,0 +1,23 @@
+# Load my scripts
+if [ -d ~/scripts ]; then
+  . ~/scripts/htdb-copy.sh
+  . ~/scripts/commands.sh
+  PS1='\n[\[\e[1;31m\]\u@\h\[\e[1;34m\] \w\[\e[0m\]]\n# '
+  mycmd
+fi
+
+# Bash history
+HISTSIZE=5000
+HISTFILE=
+HISTFILESIZE=0
+
+# `ls' to be colorized:
+export LS_OPTIONS='--color=auto'
+alias ls='ls $LS_OPTIONS'
+alias ll='ls $LS_OPTIONS -laF'
+alias la='ls $LS_OPTIONS -A'
+alias l='ls $LS_OPTIONS -lA'
+
+alias grep='grep --colour=auto'
+alias egrep='egrep --colour=auto'
+alias fgrep='fgrep --colour=auto'

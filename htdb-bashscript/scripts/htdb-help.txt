@@ -1,0 +1,14 @@
+
+Usage: htdb <command>
+
+    HatarakuDB commands:
+        debug, -d       Show /tmp/myDebug
+        log             Show log file
+
+        cron            Run indexCron.php
+        timer           Run indexTimer.php
+
+        copy            Copy database from machine to machine (RAKUS)
+
+        help, --help, -h
+                        Show hint commands

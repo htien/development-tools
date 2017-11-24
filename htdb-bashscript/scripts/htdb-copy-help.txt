@@ -1,0 +1,19 @@
+
+Usage: htdb copy <SOURCE_IP> <DESTINATION_IP> <SOURCE_DB> <DESTINATION_DB>
+  or:  htdb copy <SOURCE_IP> <SOURCE_DB> <DESTINATION_DB>
+  or:  htdb copy <SOURCE_DB> <DESTINATION_DB>
+Copy database from source host to destination host.
+
+    Parameters:
+        SOURCE_IP           IP (format x.x.x.x) of source host needed to copy.
+        DESTINATION_IP      IP (format y.y.y.y) of target host.
+
+    Samples:
+        Copy database 'testt3' from Tien's host to Long's host:
+          htdb copy 192.168.211.115 192.168.211.114 testt3 testt3
+
+        Copy database 'testt3' from Tien's host to your localhost:
+          htdb copy 192.168.211.115 testt3 testt3
+
+        Copy database 'testt3' from your localhost and change database name to 'abcxyz':
+          htdb copy testt3 abcxyz
