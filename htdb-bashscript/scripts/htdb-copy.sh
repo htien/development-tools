@@ -1,7 +1,7 @@
 #!/bin/bash
 
 __MY_RETURN_VAR=
-__MY_SCRIPT_DIR='/root/scripts'
+__MY_SCRIPT_DIR='~/scripts'
 
 htdb-copy()
 {
@@ -11,12 +11,16 @@ htdb-copy()
     return 0
   fi
 
-  ##
+  ## Prepare something
+
+  cd $__MY_SCRIPT_DIR
+
   local argsCount=$#
   local ipSrc=
   local ipDst=
   local dbSrc=
   local dbDst=
+  local prevDir=$(pwd)
 
   ##
   case "$argsCount" in
@@ -68,6 +72,7 @@ htdb-copy()
 
   ## Fireee!
   __htdbcopy_func_fireOnfly $ipSrc $ipDst $dbSrc $dbDst
+  cd $prevDir
 }
 
 __htdbcopy_func_connStr()
@@ -97,7 +102,7 @@ __htdbcopy_func_fireOnfly()
   __htdb_func_echoRun "createdb $(__htdbcopy_func_connStr $ipDst) -E UTF8 $dbDst"
 
   ## Dump DB source
-  dumpFile="$__MY_SCRIPT_DIR/DUMP-$dbSrc.snapshot"
+  dumpFile="$(pwd)/DUMP-$dbSrc.snapshot"
   echo -e "\nCreating '$dumpFile' from '$ipSrc' ..."
   __htdb_func_echoRun "pg_dump $(__htdbcopy_func_connStr $ipSrc) -Fp -d $dbSrc -f $dumpFile"
 
