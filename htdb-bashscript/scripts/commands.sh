@@ -1,6 +1,7 @@
 #!/bin/bash
 
 __MY_RETURN_VAR=
+__MY_HTDB_DIR='/usr/local/hatarakudb-bin/automatic'
 
 mycmd()
 {
@@ -15,13 +16,14 @@ go()
   local cmd=
 
   case "$1" in
-    'htdb')
-      htdbDir='/usr/local/hatarakudb-bin/automatic'
+    'htdb' )
+      htdbDir=$__MY_HTDB_DIR
       cmd="cd $htdbDir"
       $cmd
       ;;
-    *)
-      echo -e '\nI don''t know where to go!\n'
+
+    * )
+      echo -e '\nI don''t know where to go! Feelings sad.\n'
       ;;
   esac
 
@@ -31,19 +33,7 @@ go()
 
 htdb-log()
 {
-  local cmd='tail -f /var/log/htdb/hatarakudb.log'
-  echo -e ">>> $cmd\n"
-  $cmd
-}
-
-htdb-cron()
-{
-  htdb cron
-}
-
-htdb-timer()
-{
-  htdb timer
+  __htdb_func_echoRun 'tail -f /var/log/htdb/hatarakudb.log'
 }
 
 htdb()
@@ -67,18 +57,14 @@ htdb()
     'cron' )
       go htdb
       cd ".$batchDir"
-      cmd="php $(pwd)/indexCron.php"
-      echo -e ">>> $cmd"
-      $cmd
+      __htdb_func_echoRun "php $(pwd)/indexCron.php"
       cd $prevDir
       ;;
 
     'timer' )
       go htdb
       cd ".$batchDir"
-      cmd="php $(pwd)/indexTimer.php"
-      echo -e ">>> $cmd"
-      $cmd
+      __htdb_func_echoRun "php $(pwd)/indexTimer.php"
       cd $prevDir
       ;;
 
@@ -96,12 +82,12 @@ htdb()
       ;;
 
     'help'|'--help'|'-h' )
-      __htdb_func_echoFileContent ~/scripts/htdb-help.txt
+      __htdb_func_echoFileContent '~/scripts/htdb-help.txt'
       ;;
 
     * )
       resultCode=0
-      echo -e "!!! Unknown command name.\nHint: htdb help"
+      echo -e '!!! Unknown command name.\nHint: htdb help'
       ;;
   esac
 
@@ -111,21 +97,17 @@ htdb()
 
 memclear()
 {
-  local cmd='/etc/init.d/memcached restart'
-  echo -e ">>> $cmd\n"
-  $cmd
+  __htdb_func_echoRun '/etc/init.d/memcached restart'
 }
 
 mydebug()
 {
-  local cmd='tail -f /tmp/myDebug'
-  echo -e ">>> $cmd\n"
-  $cmd
+  __htdb_func_echoRun 'tail -f /tmp/myDebug'
 }
 
 __htdb_func_echoRun()
 {
-  echo -e ">>> $1"
+  echo -e ">>> $1\n"
   $1
 }
 

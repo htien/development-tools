@@ -1,7 +1,7 @@
 #!/bin/bash
 
 __MY_RETURN_VAR=
-__MY_SCRIPT_DIR='~/scripts'
+__MY_SCRIPT_DIR=~/'scripts'
 
 htdb-copy()
 {
@@ -12,15 +12,14 @@ htdb-copy()
   fi
 
   ## Prepare something
-
-  cd $__MY_SCRIPT_DIR
-
   local argsCount=$#
   local ipSrc=
   local ipDst=
   local dbSrc=
   local dbDst=
   local prevDir=$(pwd)
+
+  cd $__MY_SCRIPT_DIR
 
   ##
   case "$argsCount" in
@@ -90,6 +89,7 @@ __htdbcopy_func_fireOnfly()
   local dbDst=$4
   local dumpFile=
   local cmd=
+  local opts=
 
   ##
   echo -e '\nKill postgresql sessions/connections ...'
@@ -99,17 +99,20 @@ __htdbcopy_func_fireOnfly()
   __htdb_func_echoRun "dropdb --if-exists $(__htdbcopy_func_connStr $ipDst) $dbDst"
 
   echo -e "\nCreating database '$dbDst' ..."
-  __htdb_func_echoRun "createdb $(__htdbcopy_func_connStr $ipDst) -E UTF8 $dbDst"
+  opts='-T template0 -E UTF8'
+  __htdb_func_echoRun "createdb $(__htdbcopy_func_connStr $ipDst) $opts $dbDst"
 
   ## Dump DB source
   dumpFile="$(pwd)/DUMP-$dbSrc.snapshot"
   echo -e "\nCreating '$dumpFile' from '$ipSrc' ..."
-  __htdb_func_echoRun "pg_dump $(__htdbcopy_func_connStr $ipSrc) -Fp -d $dbSrc -f $dumpFile"
+  opts='-Fp --clean --if-exists --column-inserts --inserts'
+  __htdb_func_echoRun "pg_dump $(__htdbcopy_func_connStr $ipSrc) $opts -d $dbSrc -f $dumpFile"
 
   ## Restore dump file to localhost
   echo -e '\nFinalizing ...'
   #cmd="pg_restore $(__htdbcopy_func_connStr $ipDst) -d $dbDst $dumpFile"
-  cmd="psql $(__htdbcopy_func_connStr $ipDst) -d $dbDst -f $dumpFile"
+  opts='--quiet'
+  cmd="psql $opts $(__htdbcopy_func_connStr $ipDst) -d $dbDst -f $dumpFile"
   __htdb_func_echoRun "$cmd"
 
   echo -e '\nDone!'
