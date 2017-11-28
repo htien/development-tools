@@ -5,11 +5,12 @@ __PREV_DIR=$(pwd)
 
 [ -d $__APP_DIR/bin ] \
     && cd $__APP_DIR/bin \
-    && . commands.sh \
+    && . commands.bash \
     && . htdb-copy.bash
 
 # Yeahhh!
 mycmd
+cd $__PREV_DIR
 
 PS1='\n[\[\e[1;31m\]\u@\h\[\e[1;34m\] \w\[\e[0m\]]\n# '
 
