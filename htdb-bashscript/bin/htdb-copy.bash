@@ -88,34 +88,72 @@ __htdbcopy_func_fireOnfly()
   local dbSrc=$3
   local dbDst=$4
   local dumpFile=
-  local cmd=
-  local opts=
 
-  ##
+  ## Kill sessions, drop & create database
+
   echo -e '\nKill postgresql sessions/connections ...'
-  psql $(__htdbcopy_func_connStr $ipDst) -c $(__htdb_func_sqlKillPgSessions $dbDst) > /dev/null 2>&1
+  __htdb_func_killPgSessions $ipDst $dbDst
 
-  echo -e "\nDrop database '$dbDst' if exists ..."
-  __htdb_func_echoRun "dropdb --if-exists $(__htdbcopy_func_connStr $ipDst) $dbDst"
+  echo -e "\nDrop database '$dbDst' ($ipDst) if exists ..."
+  __htdb_func_dropDatabase $ipDst $dbDst
 
-  echo -e "\nCreating database '$dbDst' ..."
-  opts='-T template0 -E UTF8'
-  __htdb_func_echoRun "createdb $(__htdbcopy_func_connStr $ipDst) $opts $dbDst"
+  echo -e "\nCreating database '$dbDst' ($ipDst) ..."
+  __htdb_func_createDatabase $ipDst $dbDst
 
   ## Dump DB source
   dumpFile="$(pwd)/DUMP-$dbSrc.snapshot"
   echo -e "\nCreating '$dumpFile' from '$ipSrc' ..."
-  opts='-Fp --clean --if-exists --column-inserts --inserts'
-  __htdb_func_echoRun "pg_dump $(__htdbcopy_func_connStr $ipSrc) $opts -d $dbSrc -f $dumpFile"
+  __htdb_func_dumpDatabase $ipSrc $dbSrc $dumpFile
 
   ## Restore dump file to localhost
   echo -e '\nFinalizing ...'
-  #cmd="pg_restore $(__htdbcopy_func_connStr $ipDst) -d $dbDst $dumpFile"
-  opts='--quiet'
-  cmd="psql $opts $(__htdbcopy_func_connStr $ipDst) -d $dbDst -f $dumpFile"
-  __htdb_func_echoRun "$cmd"
+  __htdb_func_restoreDatabase $ipDst $dbDst $dumpFile
 
   echo -e '\nDone!'
+}
+
+__htdb_func_killPgSessions()
+{
+  local ip=$1
+  local db=$2
+  psql $(__htdbcopy_func_connStr $ip) -c $(__htdb_func_sqlKillPgSessions $db) > /dev/null 2>&1
+}
+
+__htdb_func_dropDatabase()
+{
+  local ip=$1
+  local db=$2
+  __htdb_func_echoRun "dropdb --if-exists $(__htdbcopy_func_connStr $ip) $db"
+}
+
+__htdb_func_createDatabase()
+{
+  local ip=$1
+  local db=$2
+  local opts='-T template0 -E UTF8'
+  __htdb_func_echoRun "createdb $(__htdbcopy_func_connStr $ip) $opts $db"
+}
+
+__htdb_func_dumpDatabase()
+{
+  local ip=$1
+  local db=$2
+  local dumpFile=$3
+  local opts='-Fp --clean --if-exists --column-inserts --inserts'
+  __htdb_func_echoRun "pg_dump $(__htdbcopy_func_connStr $ip) $opts -d $db -f $dumpFile"
+}
+
+__htdb_func_restoreDatabase()
+{
+  local ip=$1
+  local db=$2
+  local dumpFile=$3
+  local cmd=
+  local opts='--quiet'
+
+  #cmd="pg_restore $(__htdbcopy_func_connStr $ip) -d $db $dumpFile"
+  cmd="psql $opts $(__htdbcopy_func_connStr $ip) -d $db -f $dumpFile"
+  __htdb_func_echoRun "$cmd"
 }
 
 __htdbcopy_func_echoHelp()

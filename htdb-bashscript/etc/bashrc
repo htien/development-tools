@@ -1,10 +1,17 @@
 # Load my scripts
-if [ -d ~/scripts ]; then
-  . ~/scripts/htdb-copy.sh
-  . ~/scripts/commands.sh
-  PS1='\n[\[\e[1;31m\]\u@\h\[\e[1;34m\] \w\[\e[0m\]]\n# '
-  mycmd
-fi
+
+__APP_DIR=$(dirname $(dirname $BASH_SOURCE))
+__PREV_DIR=$(pwd)
+
+[ -d $__APP_DIR/bin ] \
+    && cd $__APP_DIR/bin \
+    && . commands.sh \
+    && . htdb-copy.bash
+
+# Yeahhh!
+mycmd
+
+PS1='\n[\[\e[1;31m\]\u@\h\[\e[1;34m\] \w\[\e[0m\]]\n# '
 
 # Bash history
 HISTSIZE=5000
