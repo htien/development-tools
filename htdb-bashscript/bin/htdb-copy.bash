@@ -101,11 +101,13 @@ __htdbcopy_func_fireOnfly()
   __htdb_func_createDatabase $ipDst $dbDst
 
   ## Dump DB source
-  dumpFile="$__MY_APP_DIR/DUMP-$dbSrc.snapshot"
+
+  dumpFile="$__MY_APP_DIR/DUMP_${ipSrc}_$dbSrc.snapshot"
   echo -e "\nCreating '$dumpFile' from '$ipSrc' ..."
   __htdb_func_dumpDatabase $ipSrc $dbSrc $dumpFile
 
   ## Restore dump file to localhost
+
   echo -e '\nFinalizing ...'
   __htdb_func_restoreDatabase $ipDst $dbDst $dumpFile
 
