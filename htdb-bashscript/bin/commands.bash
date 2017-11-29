@@ -82,7 +82,7 @@ htdb()
       ;;
 
     'help'|'--help'|'-h' )
-      __htdb_func_echoFileContent '~/scripts/htdb-help.txt'
+      __htdb_func_echoFileContent "$__APP_DIR/share/htdb-help.txt"
       ;;
 
     * )
