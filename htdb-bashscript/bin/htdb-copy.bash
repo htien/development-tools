@@ -7,7 +7,7 @@ htdb-copy()
 {
   ##
   if [ -z "$1" ]; then
-    echo -e '!!! Missing argument.'
+    echo '!!! Missing argument.'
     return 0
   fi
 
@@ -62,7 +62,7 @@ htdb-copy()
   local dbName=
   for dbName in "${reservedDbNames[@]}"
   do
-    [ "$dbName" == "$dbDst" ] && echo -e "!!! Dangerous !!! Cannot drop database '$dbDst'." && return 0
+    [ "$dbName" == "$dbDst" ] && echo "!!! Dangerous !!! Cannot drop database '$dbDst'." && return 0
   done
 
   ## Checks DB destination first
@@ -91,27 +91,27 @@ __htdbcopy_func_fireOnfly()
 
   ## Kill sessions, drop & create database
 
-  echo -e '\nKill postgresql sessions/connections ...'
+  echo $'\nKill postgresql sessions/connections ...'
   __htdb_func_killPgSessions $ipDst $dbDst
 
-  echo -e "\nDrop database '$dbDst' ($ipDst) if exists ..."
+  echo $"\nDrop database '$dbDst' ($ipDst) if exists ..."
   __htdb_func_dropDatabase $ipDst $dbDst
 
-  echo -e "\nCreating database '$dbDst' ($ipDst) ..."
+  echo $"\nCreating database '$dbDst' ($ipDst) ..."
   __htdb_func_createDatabase $ipDst $dbDst
 
   ## Dump DB source
 
   dumpFile="$__MY_APP_DIR/DUMP_${ipSrc}_$dbSrc.snapshot"
-  echo -e "\nCreating '$dumpFile' from '$ipSrc' ..."
+  echo $"\nCreating '$dumpFile' from '$ipSrc' ..."
   __htdb_func_dumpDatabase $ipSrc $dbSrc $dumpFile
 
   ## Restore dump file to localhost
 
-  echo -e '\nFinalizing ...'
+  echo $'\nFinalizing ...'
   __htdb_func_restoreDatabase $ipDst $dbDst $dumpFile
 
-  echo -e '\nDone!'
+  echo $'\nDone!'
 }
 
 __htdb_func_killPgSessions()
