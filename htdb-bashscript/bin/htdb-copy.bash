@@ -1,7 +1,6 @@
 #!/bin/bash
 
 __MY_RETURN_VAR=
-__MY_SCRIPT_DIR=~/'scripts'
 
 htdb-copy()
 {
@@ -18,8 +17,6 @@ htdb-copy()
   local dbSrc=
   local dbDst=
   local prevDir=$(pwd)
-
-  cd $__MY_SCRIPT_DIR
 
   ##
   case "$argsCount" in
@@ -158,5 +155,5 @@ __htdb_func_restoreDatabase()
 
 __htdbcopy_func_echoHelp()
 {
-  __htdb_func_echoFileContent "$__APP_DIR/scripts/htdb-copy-help.txt"
+  __htdb_func_echoFileContent "$__APP_DIR/share/htdb-copy-help.txt"
 }
