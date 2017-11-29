@@ -3,7 +3,10 @@
 __APP_DIR=$(dirname $(dirname $BASH_SOURCE))
 __PREV_DIR=$(pwd)
 
-[ -d $__APP_DIR/bin ] \
+[[ -f $__APP_DIR/etc/git-prompt.sh ]] \
+    && . $__APP_DIR/etc/git-prompt.sh
+
+[[ -d $__APP_DIR/bin ]] \
     && cd $__APP_DIR/bin \
     && . commands.bash \
     && . htdb-copy.bash
@@ -12,7 +15,7 @@ __PREV_DIR=$(pwd)
 mycmd
 cd $__PREV_DIR
 
-PS1='\n[\[\e[1;31m\]\u@\h\[\e[1;34m\] \w\[\e[0m\]]\n# '
+PS1='\n[\[\e[1;31m\]\u@\h\[\e[1;34m\] \w\[\033[36m\]`__git_ps1`\[\e[0m\]]\n# '
 
 # Bash history
 HISTSIZE=5000

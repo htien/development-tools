@@ -1,14 +1,28 @@
 INSTALL SOME COMMANDS IN YOUR SERVER
 
 1. Login your server.
-1. Copy folder "scripts" to user root folder.
-2. Paste content of "bashrc.txt" file at the end of file ".bashrc" in user root folder.
+2. Get scripts by following command:
 
-Structure of my folder:
+    git clone git@git01.mdomain:hataraku/rv-development-tools.git ~/rv-development-tools
+
+3. Copy content below & paste at the end of file ".bashrc" in your home folder.
+
+    [[ -f ~/rv-development-tools/htdb-bashscript/etc/bashrc ]] \
+      && . ~/rv-development-tools/htdb-bashscript/etc/bashrc
+
+4. Structure of my folder:
 
   /root/
-       |-- scripts/
-       |          |-- commands.sh
+       |-- rv-development-tools/
+       |          |-- bin
+       |          |    |-- commands.bash
+       |          |    |-- htdb-copy.bash
+       |          |
+       |          |-- etc
+       |          |    |-- bashrc
+       |          |    |-- git-prompt.sh
+       |          |
+       |          |-- share
        |
        |-- .bashrc
 
@@ -33,8 +47,8 @@ go htdb
 htdb <command-name>
 
     Một số command name bên dưới:
-        cron       Thực thi lệnh "php indexCron.php" trong thư mục "..htdb-git/htdocs"
-        timer      Thực thi lệnh "php indexTimer.php" trong thư mục "..htdb-git/htdocs"
+        cron       Thực thi lệnh "php indexCron.php" trong thư mục "hatarakudb-bin/automatic/htdocs"
+        timer      Thực thi lệnh "php indexTimer.php" trong thư mục "hatarakudb-bin/automatic/htdocs"
 
     Ví dụ:
         htdb cron
