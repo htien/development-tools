@@ -1,6 +1,7 @@
 #!/bin/bash
 
 __MY_RETURN_VAR=
+__MY_APP_DIR=$__APP_DIR
 
 htdb-copy()
 {
@@ -16,7 +17,9 @@ htdb-copy()
   local ipDst=
   local dbSrc=
   local dbDst=
-  local prevDir=$(pwd)
+  local __MY_PREV_DIR=$(pwd)
+
+  cd $__MY_APP_DIR
 
   ##
   case "$argsCount" in
@@ -68,7 +71,7 @@ htdb-copy()
 
   ## Fireee!
   __htdbcopy_func_fireOnfly $ipSrc $ipDst $dbSrc $dbDst
-  cd $prevDir
+  cd $__MY_PREV_DIR
 }
 
 __htdbcopy_func_connStr()
@@ -98,7 +101,7 @@ __htdbcopy_func_fireOnfly()
   __htdb_func_createDatabase $ipDst $dbDst
 
   ## Dump DB source
-  dumpFile="$(pwd)/DUMP-$dbSrc.snapshot"
+  dumpFile="$__MY_APP_DIR/DUMP-$dbSrc.snapshot"
   echo -e "\nCreating '$dumpFile' from '$ipSrc' ..."
   __htdb_func_dumpDatabase $ipSrc $dbSrc $dumpFile
 
