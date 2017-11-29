@@ -5,9 +5,9 @@ __MY_HTDB_DIR='/usr/local/hatarakudb-bin/automatic'
 
 mycmd()
 {
-  echo -e '\n==='
-  echo -e 'COMMANDS:\nmycmd, htdb, htdb-copy, htdb-log, memclear, go, mydebug'
-  echo -e '===\n'
+  echo $'\n==='
+  echo $'COMMANDS:\nmycmd, htdb, htdb-copy, htdb-log, memclear, go, mydebug'
+  echo $'===\n'
 }
 
 go()
@@ -23,7 +23,7 @@ go()
       ;;
 
     * )
-      echo -e '\nI don''t know where to go! Feelings sad.\n'
+      echo $'\nI don\'t know where to go! Feelings sad.\n'
       ;;
   esac
 
@@ -40,7 +40,7 @@ htdb()
 {
   ##
   if [ -z "$1" ]; then
-    echo -e '!!! Missing command name.'
+    echo '!!! Missing command name.'
     htdb help
     return 0
   fi
@@ -87,7 +87,7 @@ htdb()
 
     * )
       resultCode=0
-      echo -e '!!! Unknown command name.\nHint: htdb help'
+      echo $'!!! Unknown command name.\nHint: htdb help'
       ;;
   esac
 
