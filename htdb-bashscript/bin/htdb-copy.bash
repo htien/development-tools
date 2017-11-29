@@ -94,16 +94,16 @@ __htdbcopy_func_fireOnfly()
   echo $'\nKill postgresql sessions/connections ...'
   __htdb_func_killPgSessions $ipDst $dbDst
 
-  echo $"\nDrop database '$dbDst' ($ipDst) if exists ..."
+  echo -e "\nDrop database '$dbDst' ($ipDst) if exists ..."
   __htdb_func_dropDatabase $ipDst $dbDst
 
-  echo $"\nCreating database '$dbDst' ($ipDst) ..."
+  echo -e "\nCreating database '$dbDst' ($ipDst) ..."
   __htdb_func_createDatabase $ipDst $dbDst
 
   ## Dump DB source
 
   dumpFile="$__MY_APP_DIR/DUMP_${ipSrc}_$dbSrc.snapshot"
-  echo $"\nCreating '$dumpFile' from '$ipSrc' ..."
+  echo -e "\nCreating '$dumpFile' from '$ipSrc' ..."
   __htdb_func_dumpDatabase $ipSrc $dbSrc $dumpFile
 
   ## Restore dump file to localhost

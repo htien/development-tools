@@ -23,7 +23,7 @@ go()
       ;;
 
     * )
-      echo $'\nI don''t know where to go! Feelings sad.\n'
+      echo $'\nI don\'t know where to go! Feelings sad.\n'
       ;;
   esac
 
@@ -107,7 +107,7 @@ mydebug()
 
 __htdb_func_echoRun()
 {
-  echo $">>> $1\n"
+  echo -e ">>> $1\n"
   $1
 }
 
