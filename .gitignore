@@ -1,3 +1,5 @@
+DUMP_*.snapshot
+
 /*.sublime-project
 /*.sublime-workspace
 
